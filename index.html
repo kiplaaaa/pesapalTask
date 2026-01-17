@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RDBMS Terminal</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      padding: 24px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h2 {
+      margin-bottom: 4px;
+    }
+
+    h3 {
+      margin-top: 32px;
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: #334155;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 14px;
+      border: 1px solid #cbd5f5;
+      border-radius: 6px;
+      background: white;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 6px 0;
+      border: 1px solid #cbd5f5;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 8px;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      background: #2563eb;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: #64748b;
+      margin-left: 6px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    pre {
+      margin-top: 12px;
+      padding: 12px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 13px;
+      overflow-x: auto;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .row input {
+      flex: 1;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #e2e8f0;
+      margin: 32px 0;
+    }
+  </style>
+</head>
+<body>
+
+<h2>RDBMS Terminal</h2>
+
+<h3>SQL REPL</h3>
+<textarea id="sql" placeholder="Enter SQL query command here..."></textarea>
+<button onclick="runSQL()">Run SQL QUERY</button>
+
+<pre id="output"></pre>
+
+<hr>
+
+<h3>CRUD Operations</h3>
+
+<div class="row">
+  <input id="uid" placeholder="User ID">
+  <input id="email" placeholder="Email">
+</div>
+
+<button onclick="addUser()">Add User</button>
+<button class="secondary" onclick="loadUsers()">Retrieve Users</button>
+
+<pre id="users"></pre>
+
+<script src="script.js"></script>
+<script>
+function runSQL() {
+  try {
+    const result = db.execute(sql.value);
+    output.textContent =
+      typeof result === "string"
+        ? result
+        : JSON.stringify(result, null, 2);
+  } catch (e) {
+    output.textContent = "Error: " + e.message;
+  }
+}
+
+function addUser() {
+  try {
+    db.execute(`INSERT INTO users VALUES (${uid.value}, "${email.value}")`);
+    uid.value = "";
+    email.value = "";
+    loadUsers();
+  } catch (e) {
+    users.textContent = "Error: " + e.message;
+  }
+}
+
+function loadUsers() {
+  users.textContent = JSON.stringify(
+    db.execute("SELECT * FROM users"),
+    null,
+    2
+  );
+}
+</script>
+
+</body>
+</html>
