@@ -40,7 +40,7 @@ SQL Supported syntax;
     SELECT * FROM users WHERE id = 1;
     SELECT WITH JOIN:
      SELECT * FROM Table_1 JOIN Table_2 ON Table_1.id = Table_2.user_id;
- 4. UPDATE users SET name = "Alice" WHERE id = 1;
+ 4. UPDATE users SET email = "g@gmail.com" WHERE id = 1;
  5. DELETE FROM users WHERE id = 1;
  6. SHOW INDEX FROM users;
    Output:
@@ -58,7 +58,7 @@ INSERT INTO orders VALUES (1, 1, "Book");
 INSERT INTO orders VALUES (2, 1, "Pen");
 
 Select with join
-SELECT users.name, orders.product
+SELECT users.email, orders.product
 FROM users JOIN orders ON users.id = orders.user_id;
 
 Update a user
